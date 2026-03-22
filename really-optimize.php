@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Really Optimize
- * Plugin URI:  https://wordpress.org/plugins/really-optimize
+ * Plugin URI:  https://github.com/Webora-Labs/reallyoptimize
  * Description: Image optimization plugin for WordPress — compress, convert to AVIF/WebP, lazy load, and bulk optimize.
  * Version:     1.0.0
  * Author:      Really Optimize
- * Author URI:  https://wordpress.org/plugins/really-optimize
+ * Author URI:  https://github.com/Webora-Labs
  * License:     GPL-2.0+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: really-optimize

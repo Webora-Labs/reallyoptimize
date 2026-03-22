@@ -1,0 +1,246 @@
+/* -----------------------------------------------
+   Really Optimize – Admin Styles
+----------------------------------------------- */
+
+.really-optimize-wrap .nav-tab-wrapper {
+	margin-bottom: 0;
+}
+
+/* Cards */
+.really-card {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 16px 24px 8px;
+	margin-top: 20px;
+	max-width: 860px;
+}
+
+.really-card h2 {
+	font-size: 14px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	color: #50575e;
+	margin: 0 0 12px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+/* Toggle switch */
+.really-toggle {
+	position: relative;
+	display: inline-block;
+	width: 42px;
+	height: 24px;
+	vertical-align: middle;
+}
+
+.really-toggle input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.really-toggle__slider {
+	position: absolute;
+	inset: 0;
+	background: #c3c4c7;
+	border-radius: 24px;
+	cursor: pointer;
+	transition: background .2s;
+}
+
+.really-toggle__slider::before {
+	content: '';
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	left: 3px;
+	top: 3px;
+	background: #fff;
+	border-radius: 50%;
+	transition: transform .2s;
+}
+
+.really-toggle input:checked + .really-toggle__slider {
+	background: #2271b1;
+}
+
+.really-toggle input:checked + .really-toggle__slider::before {
+	transform: translateX(18px);
+}
+
+/* Quality range row */
+.really-quality-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.really-range {
+	width: 180px;
+	accent-color: #2271b1;
+}
+
+/* Warning text */
+.really-warning {
+	color: #d63638;
+}
+
+/* -----------------------------------------------
+   Bulk optimization
+----------------------------------------------- */
+
+.really-bulk-stats {
+	display: flex;
+	gap: 32px;
+	margin-bottom: 20px;
+}
+
+.really-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 80px;
+}
+
+.really-stat__value {
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 1;
+	color: #1d2327;
+}
+
+.really-stat__label {
+	font-size: 12px;
+	color: #646970;
+	margin-top: 4px;
+}
+
+/* Progress bar */
+.really-progress-wrap {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.really-progress {
+	flex: 1;
+	height: 14px;
+	background: #e0e0e0;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.really-progress__bar {
+	height: 100%;
+	background: #2271b1;
+	border-radius: 8px;
+	transition: width .3s ease;
+}
+
+.really-progress__pct {
+	min-width: 40px;
+	text-align: right;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+/* Bulk options + actions */
+.really-bulk-options {
+	margin-bottom: 14px;
+}
+
+.really-bulk-actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.really-bulk-status {
+	color: #646970;
+	font-style: italic;
+}
+
+/* Log */
+.really-log {
+	max-height: 320px;
+	overflow-y: auto;
+	background: #f6f7f7;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	padding: 10px 14px;
+	font-family: monospace;
+	font-size: 12px;
+	line-height: 1.7;
+}
+
+.really-log__empty {
+	color: #8c8f94;
+	margin: 0;
+}
+
+.really-log__line {
+	border-bottom: 1px solid #ececec;
+	padding: 2px 0;
+}
+
+.really-log__line--ok      { color: #1a7a3a; }
+.really-log__line--webp    { color: #2271b1; }
+.really-log__line--error   { color: #d63638; }
+.really-log__line--fallback{ color: #8c5a00; }
+
+/* -----------------------------------------------
+   Cache tab
+----------------------------------------------- */
+
+.really-card .form-table td textarea.code {
+	font-family: monospace;
+	font-size: 12px;
+}
+
+/* Radio rows */
+.really-radio-row {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	margin-bottom: 6px;
+	cursor: pointer;
+}
+
+/* CLI tools table */
+.really-tools-table {
+	border-collapse: collapse;
+}
+
+.really-tools-table th,
+.really-tools-table td {
+	padding: 8px 12px;
+	vertical-align: middle;
+}
+
+.really-tools-table tbody tr:nth-child(odd) {
+	background: #f9f9f9;
+}
+
+/* Status badges */
+.really-badge {
+	display: inline-block;
+	padding: 2px 10px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.really-badge--ok {
+	background: #d8f5e1;
+	color: #1a7a3a;
+}
+
+.really-badge--missing {
+	background: #fce8e8;
+	color: #a11c1c;
+}

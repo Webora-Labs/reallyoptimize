@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Really_Optimize_Settings {
+class Webora_Image_Optimizer_Settings {
 
 	public static function defaults() {
 		return array(
@@ -22,7 +22,7 @@ class Really_Optimize_Settings {
 	}
 
 	public static function get( $key = null ) {
-		$settings = get_option( 'really_optimize_settings', self::defaults() );
+		$settings = get_option( 'webora_image_optimizer_settings', self::defaults() );
 		$settings = wp_parse_args( $settings, self::defaults() );
 
 		if ( null !== $key ) {
@@ -52,7 +52,7 @@ class Really_Optimize_Settings {
 
 	public static function save( array $data ) {
 		$current = self::get();
-		$tab     = isset( $data['really_optimize_tab'] ) ? sanitize_key( $data['really_optimize_tab'] ) : '';
+		$tab     = isset( $data['webora_image_optimizer_tab'] ) ? sanitize_key( $data['webora_image_optimizer_tab'] ) : '';
 		$schema  = self::tab_fields();
 
 		// If submitted tab is unknown, fall back to saving all tabs (safety net).
@@ -106,6 +106,6 @@ class Really_Optimize_Settings {
 			}
 		}
 
-		update_option( 'really_optimize_settings', $current );
+		update_option( 'webora_image_optimizer_settings', $current );
 	}
 }

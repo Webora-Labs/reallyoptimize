@@ -3,9 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Really_Optimize_Bulk {
+class Webora_Image_Optimizer_Bulk {
 
-	const META_KEY  = '_really_optimized';
+	const META_KEY  = '_webora_optimized';
 	const BATCH     = 5;
 	const MIME_TYPES = array( 'image/jpeg', 'image/png' );
 
@@ -121,13 +121,13 @@ class Really_Optimize_Bulk {
 		}
 
 		$mime    = get_post_mime_type( $attachment_id );
-		$quality = (int) Really_Optimize_Settings::get( 'img_quality' );
-		$do_webp = (bool) Really_Optimize_Settings::get( 'img_webp' );
+		$quality = (int) Webora_Image_Optimizer_Settings::get( 'img_quality' );
+		$do_webp = (bool) Webora_Image_Optimizer_Settings::get( 'img_webp' );
 		$size_before = filesize( $file );
 
 		// --- WebP conversion ------------------------------------------------
 		if ( $do_webp && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
-			$webp = Really_Optimize_CLI::to_webp( $file, $quality );
+			$webp = Webora_Image_Optimizer_CLI::to_webp( $file, $quality );
 
 			if ( ! $webp ) {
 				// GD fallback
@@ -156,9 +156,9 @@ class Really_Optimize_Bulk {
 		// --- Compression only -----------------------------------------------
 		$done = false;
 		if ( 'image/jpeg' === $mime ) {
-			$done = Really_Optimize_CLI::compress_jpeg( $file, $quality );
+			$done = Webora_Image_Optimizer_CLI::compress_jpeg( $file, $quality );
 		} elseif ( 'image/png' === $mime ) {
-			$done = Really_Optimize_CLI::compress_png( $file );
+			$done = Webora_Image_Optimizer_CLI::compress_png( $file );
 		}
 
 		// GD/Imagick fallback

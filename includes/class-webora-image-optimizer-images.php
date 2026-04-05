@@ -3,19 +3,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Really_Optimize_Images {
+class Webora_Image_Optimizer_Images {
 
 	public function __construct() {
-		if ( Really_Optimize_Settings::get( 'img_compress' ) || Really_Optimize_Settings::get( 'img_webp' ) || Really_Optimize_Settings::get( 'img_avif' ) ) {
+		if ( Webora_Image_Optimizer_Settings::get( 'img_compress' ) || Webora_Image_Optimizer_Settings::get( 'img_webp' ) || Webora_Image_Optimizer_Settings::get( 'img_avif' ) ) {
 			add_filter( 'wp_handle_upload', array( $this, 'process_on_upload' ) );
 		}
 
-		if ( Really_Optimize_Settings::get( 'img_lazy_load' ) ) {
+		if ( Webora_Image_Optimizer_Settings::get( 'img_lazy_load' ) ) {
 			add_filter( 'the_content',        array( $this, 'add_lazy_load' ) );
 			add_filter( 'post_thumbnail_html', array( $this, 'add_lazy_load' ) );
 		}
 
-		if ( Really_Optimize_Settings::get( 'img_add_dimensions' ) ) {
+		if ( Webora_Image_Optimizer_Settings::get( 'img_add_dimensions' ) ) {
 			add_filter( 'the_content',        array( $this, 'add_dimensions' ) );
 			add_filter( 'post_thumbnail_html', array( $this, 'add_dimensions' ) );
 		}
@@ -33,13 +33,13 @@ class Really_Optimize_Images {
 		}
 
 		$file    = $upload['file'];
-		$quality = (int) Really_Optimize_Settings::get( 'img_quality' );
+		$quality = (int) Webora_Image_Optimizer_Settings::get( 'img_quality' );
 
 		// 1. Resize if needed (always uses WP image editor — no CLI needed).
 		$this->resize_if_needed( $file, $mime );
 
 		// 2. Convert to AVIF (CLI preferred, GD as fallback) — takes priority over WebP.
-		if ( Really_Optimize_Settings::get( 'img_avif' ) && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
+		if ( Webora_Image_Optimizer_Settings::get( 'img_avif' ) && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
 			$avif = $this->convert_to_avif( $file, $mime, $quality );
 			if ( $avif ) {
 				wp_delete_file( $file );
@@ -51,7 +51,7 @@ class Really_Optimize_Images {
 		}
 
 		// 3. Convert to WebP (CLI preferred, GD as fallback).
-		if ( Really_Optimize_Settings::get( 'img_webp' ) && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
+		if ( Webora_Image_Optimizer_Settings::get( 'img_webp' ) && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
 			$webp = $this->convert_to_webp( $file, $mime, $quality );
 			if ( $webp ) {
 				wp_delete_file( $file );
@@ -63,7 +63,7 @@ class Really_Optimize_Images {
 		}
 
 		// 4. Compress in-place (CLI preferred, GD/Imagick as fallback).
-		if ( Really_Optimize_Settings::get( 'img_compress' ) ) {
+		if ( Webora_Image_Optimizer_Settings::get( 'img_compress' ) ) {
 			$this->compress( $file, $mime, $quality );
 		}
 
@@ -75,8 +75,8 @@ class Really_Optimize_Images {
 	// -----------------------------------------------------------------------
 
 	private function resize_if_needed( $file, $mime ) {
-		$max_w = (int) Really_Optimize_Settings::get( 'img_max_width' );
-		$max_h = (int) Really_Optimize_Settings::get( 'img_max_height' );
+		$max_w = (int) Webora_Image_Optimizer_Settings::get( 'img_max_width' );
+		$max_h = (int) Webora_Image_Optimizer_Settings::get( 'img_max_height' );
 
 		list( $width, $height ) = @getimagesize( $file );
 
@@ -100,9 +100,9 @@ class Really_Optimize_Images {
 		$done = false;
 
 		if ( 'image/jpeg' === $mime ) {
-			$done = Really_Optimize_CLI::compress_jpeg( $file, $quality );
+			$done = Webora_Image_Optimizer_CLI::compress_jpeg( $file, $quality );
 		} elseif ( 'image/png' === $mime ) {
-			$done = Really_Optimize_CLI::compress_png( $file );
+			$done = Webora_Image_Optimizer_CLI::compress_png( $file );
 		}
 
 		// Fallback: WordPress image editor (GD or Imagick).
@@ -124,7 +124,7 @@ class Really_Optimize_Images {
 	 */
 	private function convert_to_webp( $file, $mime, $quality ) {
 		// Try cwebp first.
-		$webp = Really_Optimize_CLI::to_webp( $file, $quality );
+		$webp = Webora_Image_Optimizer_CLI::to_webp( $file, $quality );
 		if ( $webp ) {
 			return $webp;
 		}

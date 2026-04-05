@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   PNG   → pngquant → oxipng → optipng  → GD/Imagick fallback
  *   WebP  → cwebp → GD imagewebp() fallback
  */
-class Really_Optimize_CLI {
+class Webora_Image_Optimizer_CLI {
 
 	/** Runtime cache: binary => path|null */
 	private static $cache = array();
@@ -59,7 +59,7 @@ class Really_Optimize_CLI {
 		$path = null;
 
 		// 1. Custom path configured in settings.
-		$custom_paths = Really_Optimize_Settings::get( 'cli_paths' );
+		$custom_paths = Webora_Image_Optimizer_Settings::get( 'cli_paths' );
 		if ( ! empty( $custom_paths[ $key ] ) ) {
 			$candidate = trim( $custom_paths[ $key ] );
 			if ( $candidate && is_executable( $candidate ) ) {
@@ -131,7 +131,7 @@ class Really_Optimize_CLI {
 		// --- mozjpeg (cjpeg) ------------------------------------------------
 		$cjpeg = self::find( 'cjpeg' );
 		if ( $cjpeg ) {
-			$tmp = $file . '.ro_tmp.jpg';
+			$tmp = $file . '.wio_tmp.jpg';
 			$cmd = sprintf(
 				'%s -quality %d -optimize -outfile %s %s 2>/dev/null',
 				escapeshellarg( $cjpeg ),

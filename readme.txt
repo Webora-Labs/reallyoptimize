@@ -1,5 +1,5 @@
-=== Really Optimize ===
-Contributors: reallyoptimize
+=== Webora Image Optimizer ===
+Contributors: weboralabs
 Tags: image optimization, webp, avif, compress, lazy load
 Requires at least: 6.0
 Tested up to: 6.9
@@ -12,7 +12,7 @@ Lightweight image optimization plugin for WordPress. Compress, convert to AVIF a
 
 == Description ==
 
-Really Optimize is a lightweight image optimization plugin for WordPress.
+Webora Image Optimizer is a lightweight image optimization plugin for WordPress.
 
 **Features:**
 
@@ -26,9 +26,9 @@ Really Optimize is a lightweight image optimization plugin for WordPress.
 
 == Installation ==
 
-1. Upload the "really-optimize" folder to /wp-content/plugins/.
+1. Upload the "webora-image-optimizer" folder to /wp-content/plugins/.
 2. Activate the plugin through the Plugins menu in WordPress.
-3. Go to Settings, then Really Optimize to configure.
+3. Go to Settings, then Webora Image Optimizer to configure.
 
 == Frequently Asked Questions ==
 

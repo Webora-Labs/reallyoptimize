@@ -21,17 +21,17 @@
 		offset  : 0,
 
 		els: {
-			start     : $( '#really-bulk-start' ),
-			pause     : $( '#really-bulk-pause' ),
-			reset     : $( '#really-bulk-reset' ),
-			status    : $( '#really-bulk-status' ),
-			bar       : $( '#really-progress-bar' ),
-			pct       : $( '#really-progress-pct' ),
-			total     : $( '#really-bulk-total' ),
-			done      : $( '#really-bulk-done' ),
-			remaining : $( '#really-bulk-remaining' ),
-			log       : $( '#really-bulk-log' ),
-			skipDone  : $( '#really-skip-done' ),
+			start     : $( '#webora-bulk-start' ),
+			pause     : $( '#webora-bulk-pause' ),
+			reset     : $( '#webora-bulk-reset' ),
+			status    : $( '#webora-bulk-status' ),
+			bar       : $( '#webora-progress-bar' ),
+			pct       : $( '#webora-progress-pct' ),
+			total     : $( '#webora-bulk-total' ),
+			done      : $( '#webora-bulk-done' ),
+			remaining : $( '#webora-bulk-remaining' ),
+			log       : $( '#webora-bulk-log' ),
+			skipDone  : $( '#webora-skip-done' ),
 		},
 
 		init: function () {
@@ -51,7 +51,7 @@
 			this.els.start.prop( 'disabled', true );
 			this.els.pause.show();
 			this.els.log.empty();
-			this.setStatus( reallyOptimize.i18n.starting );
+			this.setStatus( weboraImageOptimizer.i18n.starting );
 
 			this.runBatch();
 		},
@@ -61,21 +61,21 @@
 			this.running = false;
 			this.els.pause.hide();
 			this.els.start.prop( 'disabled', false ).text( 'Resume' );
-			this.setStatus( reallyOptimize.i18n.paused );
+			this.setStatus( weboraImageOptimizer.i18n.paused );
 		},
 
 		reset: function () {
 			if ( ! confirm( 'Clear all optimization marks? Images will be treated as unoptimized.' ) ) return;
 
-			$.post( reallyOptimize.ajaxUrl, {
-				action : 'really_bulk_reset',
-				nonce  : reallyOptimize.nonce,
+			$.post( weboraImageOptimizer.ajaxUrl, {
+				action : 'webora_bulk_reset',
+				nonce  : weboraImageOptimizer.nonce,
 			}, $.proxy( function ( res ) {
 				if ( res.success ) {
 					this.updateCounters( res.data.total, res.data.done );
 					this.updateBar( 0 );
 					this.els.log.empty().append(
-						$( '<p>' ).text( reallyOptimize.i18n.resetDone )
+						$( '<p>' ).text( weboraImageOptimizer.i18n.resetDone )
 					);
 					this.els.start.text( 'Start Optimization' );
 				}
@@ -88,9 +88,9 @@
 			var self     = this;
 			var skipDone = this.els.skipDone.is( ':checked' ) ? 1 : 0;
 
-			$.post( reallyOptimize.ajaxUrl, {
-				action    : 'really_bulk_run',
-				nonce     : reallyOptimize.nonce,
+			$.post( weboraImageOptimizer.ajaxUrl, {
+				action    : 'webora_bulk_run',
+				nonce     : weboraImageOptimizer.nonce,
 				offset    : this.offset,
 				skip_done : skipDone,
 			} )
@@ -104,7 +104,7 @@
 				self.updateCounters( d.total, d.done );
 				var pct = d.total > 0 ? Math.round( d.done / d.total * 100 ) : 100;
 				self.updateBar( pct );
-				self.setStatus( reallyOptimize.i18n.processing + ' ' + d.done + ' / ' + d.total );
+				self.setStatus( weboraImageOptimizer.i18n.processing + ' ' + d.done + ' / ' + d.total );
 				self.appendLog( d.log );
 
 				if ( d.finished || d.processed === 0 ) {
@@ -123,7 +123,7 @@
 			this.running = false;
 			this.els.pause.hide();
 			this.els.start.prop( 'disabled', false ).text( 'Start Optimization' );
-			this.setStatus( isError ? reallyOptimize.i18n.error : reallyOptimize.i18n.done );
+			this.setStatus( isError ? weboraImageOptimizer.i18n.error : weboraImageOptimizer.i18n.done );
 			this.updateBar( isError ? null : 100 );
 		},
 
@@ -148,10 +148,10 @@
 			if ( ! entries || ! entries.length ) return;
 
 			var $log = this.els.log;
-			$log.find( '.really-log__empty' ).remove();
+			$log.find( '.webora-log__empty' ).remove();
 
 			$.each( entries, function ( i, item ) {
-				var cls = 'really-log__line really-log__line--' + item.status;
+				var cls = 'webora-log__line webora-log__line--' + item.status;
 				var txt = '#' + item.id + ' ' + item.file + ' — ' + item.message;
 				$log.prepend( $( '<div>' ).addClass( cls ).text( txt ) );
 			} );

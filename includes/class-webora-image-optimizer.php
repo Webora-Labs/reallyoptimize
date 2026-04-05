@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Really_Optimize {
+class Webora_Image_Optimizer {
 
 	private static $instance = null;
 
@@ -20,31 +20,31 @@ class Really_Optimize {
 	}
 
 	private function includes() {
-		require_once REALLY_OPTIMIZE_DIR . 'includes/class-really-optimize-settings.php';
-		require_once REALLY_OPTIMIZE_DIR . 'includes/class-really-optimize-cli.php';
-		require_once REALLY_OPTIMIZE_DIR . 'includes/class-really-optimize-images.php';
-		require_once REALLY_OPTIMIZE_DIR . 'includes/class-really-optimize-bulk.php';
+		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-settings.php';
+		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-cli.php';
+		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-images.php';
+		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-bulk.php';
 
 		if ( is_admin() ) {
-			require_once REALLY_OPTIMIZE_DIR . 'admin/class-really-optimize-admin.php';
+			require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'admin/class-webora-image-optimizer-admin.php';
 		}
 	}
 
 	public function init_modules() {
-		new Really_Optimize_Images();
+		new Webora_Image_Optimizer_Images();
 	}
 
 	private function hooks() {
-		register_activation_hook( REALLY_OPTIMIZE_FILE, array( $this, 'activate' ) );
-		register_deactivation_hook( REALLY_OPTIMIZE_FILE, array( $this, 'deactivate' ) );
+		register_activation_hook( WEBORA_IMAGE_OPTIMIZER_FILE, array( $this, 'activate' ) );
+		register_deactivation_hook( WEBORA_IMAGE_OPTIMIZER_FILE, array( $this, 'deactivate' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'init',           array( $this, 'init_modules' ) );
 	}
 
 	public function activate() {
-		if ( ! get_option( 'really_optimize_settings' ) ) {
-			add_option( 'really_optimize_settings', Really_Optimize_Settings::defaults() );
+		if ( ! get_option( 'webora_image_optimizer_settings' ) ) {
+			add_option( 'webora_image_optimizer_settings', Webora_Image_Optimizer_Settings::defaults() );
 		}
 	}
 

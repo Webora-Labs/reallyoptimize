@@ -4,103 +4,103 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET param for tab navigation, not form processing.
-$really_optimize_active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'images';
-$really_optimize_tabs = array(
-	'images' => __( 'Image Optimization', 'really-optimize' ),
-	'bulk'   => __( 'Bulk Optimize', 'really-optimize' ),
+$webora_active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'images';
+$webora_tabs = array(
+	'images' => __( 'Image Optimization', 'webora-image-optimizer' ),
+	'bulk'   => __( 'Bulk Optimize', 'webora-image-optimizer' ),
 );
 ?>
-<div class="wrap really-optimize-wrap">
-	<h1><?php esc_html_e( 'Really Optimize', 'really-optimize' ); ?></h1>
+<div class="wrap webora-optimize-wrap">
+	<h1><?php esc_html_e( 'Webora Image Optimizer', 'webora-image-optimizer' ); ?></h1>
 
 	<nav class="nav-tab-wrapper">
-		<?php foreach ( $really_optimize_tabs as $really_optimize_slug => $really_optimize_label ) : ?>
-			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'really-optimize', 'tab' => $really_optimize_slug ), admin_url( 'options-general.php' ) ) ); ?>"
-			   class="nav-tab <?php echo $really_optimize_active_tab === $really_optimize_slug ? 'nav-tab-active' : ''; ?>">
-				<?php echo esc_html( $really_optimize_label ); ?>
+		<?php foreach ( $webora_tabs as $webora_slug => $webora_label ) : ?>
+			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'webora-image-optimizer', 'tab' => $webora_slug ), admin_url( 'options-general.php' ) ) ); ?>"
+			   class="nav-tab <?php echo $webora_active_tab === $webora_slug ? 'nav-tab-active' : ''; ?>">
+				<?php echo esc_html( $webora_label ); ?>
 			</a>
 		<?php endforeach; ?>
 	</nav>
 
 	<form method="post" action="">
-		<?php wp_nonce_field( 'really_optimize_save', 'really_optimize_nonce' ); ?>
-		<input type="hidden" name="really_optimize_tab" value="<?php echo esc_attr( $really_optimize_active_tab ); ?>" />
+		<?php wp_nonce_field( 'webora_image_optimizer_save', 'webora_image_optimizer_nonce' ); ?>
+		<input type="hidden" name="webora_image_optimizer_tab" value="<?php echo esc_attr( $webora_active_tab ); ?>" />
 
-		<?php if ( 'images' === $really_optimize_active_tab ) :
-			$really_optimize_cli_status = Really_Optimize_CLI::status();
-			$really_optimize_cli_paths  = $settings['cli_paths'];
+		<?php if ( 'images' === $webora_active_tab ) :
+			$webora_cli_status = Webora_Image_Optimizer_CLI::status();
+			$webora_cli_paths  = $settings['cli_paths'];
 		?>
-		<div class="really-tab-panel">
+		<div class="webora-tab-panel">
 
-			<div class="really-card">
-				<h2><?php esc_html_e( 'Compression', 'really-optimize' ); ?></h2>
+			<div class="webora-card">
+				<h2><?php esc_html_e( 'Compression', 'webora-image-optimizer' ); ?></h2>
 
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Enable Compression', 'really-optimize' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Enable Compression', 'webora-image-optimizer' ); ?></th>
 						<td>
-							<label class="really-toggle">
+							<label class="webora-toggle">
 								<input type="checkbox" name="img_compress" value="1"
 									<?php checked( $settings['img_compress'] ); ?> id="img_compress" />
-								<span class="really-toggle__slider"></span>
+								<span class="webora-toggle__slider"></span>
 							</label>
-							<p class="description"><?php esc_html_e( 'Compress images on upload to reduce file size.', 'really-optimize' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Compress images on upload to reduce file size.', 'webora-image-optimizer' ); ?></p>
 						</td>
 					</tr>
-					<tr class="really-depends-on-compress">
+					<tr class="webora-depends-on-compress">
 						<th scope="row">
-							<label for="img_quality"><?php esc_html_e( 'Quality', 'really-optimize' ); ?></label>
+							<label for="img_quality"><?php esc_html_e( 'Quality', 'webora-image-optimizer' ); ?></label>
 						</th>
 						<td>
-							<div class="really-quality-row">
+							<div class="webora-quality-row">
 								<input type="range" id="img_quality_range" min="1" max="100"
 									value="<?php echo esc_attr( $settings['img_quality'] ); ?>"
-									class="really-range" />
+									class="webora-range" />
 								<input type="number" name="img_quality" id="img_quality" min="1" max="100"
 									value="<?php echo esc_attr( $settings['img_quality'] ); ?>"
 									class="small-text" />
 								<span>%</span>
 							</div>
-							<p class="description"><?php esc_html_e( 'Image quality for JPEG and WebP (1-100). Recommended: 80-90.', 'really-optimize' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Image quality for JPEG and WebP (1-100). Recommended: 80-90.', 'webora-image-optimizer' ); ?></p>
 						</td>
 					</tr>
 				</table>
 			</div>
 
-			<div class="really-card">
-				<h2><?php esc_html_e( 'Next-Gen Formats', 'really-optimize' ); ?></h2>
+			<div class="webora-card">
+				<h2><?php esc_html_e( 'Next-Gen Formats', 'webora-image-optimizer' ); ?></h2>
 
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Convert to AVIF', 'really-optimize' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Convert to AVIF', 'webora-image-optimizer' ); ?></th>
 						<td>
-							<label class="really-toggle">
+							<label class="webora-toggle">
 								<input type="checkbox" name="img_avif" value="1"
 									<?php checked( $settings['img_avif'] ); ?> />
-								<span class="really-toggle__slider"></span>
+								<span class="webora-toggle__slider"></span>
 							</label>
 							<p class="description">
-								<?php esc_html_e( 'Convert JPEG/PNG to AVIF on upload. Best compression (30-50% smaller than WebP). Takes priority over WebP if both enabled.', 'really-optimize' ); ?>
+								<?php esc_html_e( 'Convert JPEG/PNG to AVIF on upload. Best compression (30-50% smaller than WebP). Takes priority over WebP if both enabled.', 'webora-image-optimizer' ); ?>
 								<?php if ( ! function_exists( 'imageavif' ) ) : ?>
-									<br><strong class="really-warning"><?php esc_html_e( 'AVIF not supported (requires PHP 8.1+ and GD with AVIF).', 'really-optimize' ); ?></strong>
+									<br><strong class="webora-warning"><?php esc_html_e( 'AVIF not supported (requires PHP 8.1+ and GD with AVIF).', 'webora-image-optimizer' ); ?></strong>
 								<?php else : ?>
-									<br><span class="really-badge really-badge--ok"><?php esc_html_e( 'AVIF supported', 'really-optimize' ); ?></span>
+									<br><span class="webora-badge webora-badge--ok"><?php esc_html_e( 'AVIF supported', 'webora-image-optimizer' ); ?></span>
 								<?php endif; ?>
 							</p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Convert to WebP', 'really-optimize' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Convert to WebP', 'webora-image-optimizer' ); ?></th>
 						<td>
-							<label class="really-toggle">
+							<label class="webora-toggle">
 								<input type="checkbox" name="img_webp" value="1"
 									<?php checked( $settings['img_webp'] ); ?> />
-								<span class="really-toggle__slider"></span>
+								<span class="webora-toggle__slider"></span>
 							</label>
 							<p class="description">
-								<?php esc_html_e( 'Automatically convert JPEG and PNG images to WebP on upload.', 'really-optimize' ); ?>
+								<?php esc_html_e( 'Automatically convert JPEG and PNG images to WebP on upload.', 'webora-image-optimizer' ); ?>
 								<?php if ( ! function_exists( 'imagewebp' ) ) : ?>
-									<br><strong class="really-warning"><?php esc_html_e( 'Your server does not support WebP (GD library missing imagewebp).', 'really-optimize' ); ?></strong>
+									<br><strong class="webora-warning"><?php esc_html_e( 'Your server does not support WebP (GD library missing imagewebp).', 'webora-image-optimizer' ); ?></strong>
 								<?php endif; ?>
 							</p>
 						</td>
@@ -108,92 +108,92 @@ $really_optimize_tabs = array(
 				</table>
 			</div>
 
-			<div class="really-card">
-				<h2><?php esc_html_e( 'Loading and Dimensions', 'really-optimize' ); ?></h2>
+			<div class="webora-card">
+				<h2><?php esc_html_e( 'Loading and Dimensions', 'webora-image-optimizer' ); ?></h2>
 
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Lazy Load Images', 'really-optimize' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Lazy Load Images', 'webora-image-optimizer' ); ?></th>
 						<td>
-							<label class="really-toggle">
+							<label class="webora-toggle">
 								<input type="checkbox" name="img_lazy_load" value="1"
 									<?php checked( $settings['img_lazy_load'] ); ?> />
-								<span class="really-toggle__slider"></span>
+								<span class="webora-toggle__slider"></span>
 							</label>
-							<p class="description"><?php esc_html_e( 'Add loading="lazy" to all images in content.', 'really-optimize' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Add loading="lazy" to all images in content.', 'webora-image-optimizer' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Add Width and Height', 'really-optimize' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Add Width and Height', 'webora-image-optimizer' ); ?></th>
 						<td>
-							<label class="really-toggle">
+							<label class="webora-toggle">
 								<input type="checkbox" name="img_add_dimensions" value="1"
 									<?php checked( $settings['img_add_dimensions'] ); ?> />
-								<span class="really-toggle__slider"></span>
+								<span class="webora-toggle__slider"></span>
 							</label>
-							<p class="description"><?php esc_html_e( 'Add width and height attributes to local images that are missing them. Prevents layout shift (CLS).', 'really-optimize' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Add width and height attributes to local images that are missing them. Prevents layout shift (CLS).', 'webora-image-optimizer' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Max Dimensions', 'really-optimize' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Max Dimensions', 'webora-image-optimizer' ); ?></th>
 						<td>
 							<label>
-								<?php esc_html_e( 'Width', 'really-optimize' ); ?>
+								<?php esc_html_e( 'Width', 'webora-image-optimizer' ); ?>
 								<input type="number" name="img_max_width" min="100" max="9999"
 									value="<?php echo esc_attr( $settings['img_max_width'] ); ?>"
 									class="small-text" /> px
 							</label>
 							&nbsp;&nbsp;
 							<label>
-								<?php esc_html_e( 'Height', 'really-optimize' ); ?>
+								<?php esc_html_e( 'Height', 'webora-image-optimizer' ); ?>
 								<input type="number" name="img_max_height" min="100" max="9999"
 									value="<?php echo esc_attr( $settings['img_max_height'] ); ?>"
 									class="small-text" /> px
 							</label>
-							<p class="description"><?php esc_html_e( 'Images exceeding these dimensions will be resized on upload.', 'really-optimize' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Images exceeding these dimensions will be resized on upload.', 'webora-image-optimizer' ); ?></p>
 						</td>
 					</tr>
 				</table>
 			</div>
 
-			<div class="really-card">
-				<h2><?php esc_html_e( 'CLI Tools', 'really-optimize' ); ?></h2>
+			<div class="webora-card">
+				<h2><?php esc_html_e( 'CLI Tools', 'webora-image-optimizer' ); ?></h2>
 
-				<?php if ( ! Really_Optimize_CLI::exec_available() ) : ?>
-					<p class="really-warning">
-						<?php esc_html_e( 'PHP exec() is disabled on this server. CLI tools cannot be used. Falling back to GD/Imagick.', 'really-optimize' ); ?>
+				<?php if ( ! Webora_Image_Optimizer_CLI::exec_available() ) : ?>
+					<p class="webora-warning">
+						<?php esc_html_e( 'PHP exec() is disabled on this server. CLI tools cannot be used. Falling back to GD/Imagick.', 'webora-image-optimizer' ); ?>
 					</p>
 				<?php else : ?>
 
-				<table class="widefat really-tools-table">
+				<table class="widefat webora-tools-table">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Tool', 'really-optimize' ); ?></th>
-							<th><?php esc_html_e( 'Format', 'really-optimize' ); ?></th>
-							<th><?php esc_html_e( 'Status', 'really-optimize' ); ?></th>
-							<th><?php esc_html_e( 'Path detected', 'really-optimize' ); ?></th>
-							<th><?php esc_html_e( 'Custom path (optional)', 'really-optimize' ); ?></th>
+							<th><?php esc_html_e( 'Tool', 'webora-image-optimizer' ); ?></th>
+							<th><?php esc_html_e( 'Format', 'webora-image-optimizer' ); ?></th>
+							<th><?php esc_html_e( 'Status', 'webora-image-optimizer' ); ?></th>
+							<th><?php esc_html_e( 'Path detected', 'webora-image-optimizer' ); ?></th>
+							<th><?php esc_html_e( 'Custom path (optional)', 'webora-image-optimizer' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ( $really_optimize_cli_status as $really_optimize_key => $really_optimize_tool ) : ?>
+						<?php foreach ( $webora_cli_status as $webora_key => $webora_tool ) : ?>
 						<tr>
-							<td><strong><?php echo esc_html( $really_optimize_tool['label'] ); ?></strong></td>
-							<td><?php echo esc_html( $really_optimize_tool['purpose'] ); ?></td>
+							<td><strong><?php echo esc_html( $webora_tool['label'] ); ?></strong></td>
+							<td><?php echo esc_html( $webora_tool['purpose'] ); ?></td>
 							<td>
-								<?php if ( $really_optimize_tool['available'] ) : ?>
-									<span class="really-badge really-badge--ok"><?php esc_html_e( 'Found', 'really-optimize' ); ?></span>
+								<?php if ( $webora_tool['available'] ) : ?>
+									<span class="webora-badge webora-badge--ok"><?php esc_html_e( 'Found', 'webora-image-optimizer' ); ?></span>
 								<?php else : ?>
-									<span class="really-badge really-badge--missing"><?php esc_html_e( 'Not found', 'really-optimize' ); ?></span>
+									<span class="webora-badge webora-badge--missing"><?php esc_html_e( 'Not found', 'webora-image-optimizer' ); ?></span>
 								<?php endif; ?>
 							</td>
 							<td>
-								<code><?php echo $really_optimize_tool['path'] ? esc_html( $really_optimize_tool['path'] ) : '-'; ?></code>
+								<code><?php echo $webora_tool['path'] ? esc_html( $webora_tool['path'] ) : '-'; ?></code>
 							</td>
 							<td>
-								<input type="text" name="cli_paths[<?php echo esc_attr( $really_optimize_key ); ?>]"
-									value="<?php echo esc_attr( isset( $really_optimize_cli_paths[ $really_optimize_key ] ) ? $really_optimize_cli_paths[ $really_optimize_key ] : '' ); ?>"
-									placeholder="/usr/bin/<?php echo esc_attr( $really_optimize_tool['label'] ); ?>"
+								<input type="text" name="cli_paths[<?php echo esc_attr( $webora_key ); ?>]"
+									value="<?php echo esc_attr( isset( $webora_cli_paths[ $webora_key ] ) ? $webora_cli_paths[ $webora_key ] : '' ); ?>"
+									placeholder="/usr/bin/<?php echo esc_attr( $webora_tool['label'] ); ?>"
 									class="regular-text" />
 							</td>
 						</tr>
@@ -202,7 +202,7 @@ $really_optimize_tabs = array(
 				</table>
 
 				<p class="description" style="margin-top:8px;">
-					<?php esc_html_e( 'Leave custom path empty to use auto-detection.', 'really-optimize' ); ?>
+					<?php esc_html_e( 'Leave custom path empty to use auto-detection.', 'webora-image-optimizer' ); ?>
 				</p>
 
 				<?php endif; ?>
@@ -211,71 +211,71 @@ $really_optimize_tabs = array(
 		</div>
 		<?php endif; ?>
 
-		<?php if ( 'bulk' === $really_optimize_active_tab ) :
-			$really_optimize_bulk_total = Really_Optimize_Bulk::count_total();
-			$really_optimize_bulk_done  = Really_Optimize_Bulk::count_done();
-			$really_optimize_bulk_pct   = $really_optimize_bulk_total > 0 ? round( $really_optimize_bulk_done / $really_optimize_bulk_total * 100 ) : 0;
+		<?php if ( 'bulk' === $webora_active_tab ) :
+			$webora_bulk_total = Webora_Image_Optimizer_Bulk::count_total();
+			$webora_bulk_done  = Webora_Image_Optimizer_Bulk::count_done();
+			$webora_bulk_pct   = $webora_bulk_total > 0 ? round( $webora_bulk_done / $webora_bulk_total * 100 ) : 0;
 		?>
-		<div class="really-tab-panel">
+		<div class="webora-tab-panel">
 
-			<div class="really-card">
-				<h2><?php esc_html_e( 'Bulk Image Optimization', 'really-optimize' ); ?></h2>
+			<div class="webora-card">
+				<h2><?php esc_html_e( 'Bulk Image Optimization', 'webora-image-optimizer' ); ?></h2>
 
-				<div class="really-bulk-stats">
-					<div class="really-stat">
-						<span class="really-stat__value" id="really-bulk-total"><?php echo (int) $really_optimize_bulk_total; ?></span>
-						<span class="really-stat__label"><?php esc_html_e( 'Total images', 'really-optimize' ); ?></span>
+				<div class="webora-bulk-stats">
+					<div class="webora-stat">
+						<span class="webora-stat__value" id="webora-bulk-total"><?php echo (int) $webora_bulk_total; ?></span>
+						<span class="webora-stat__label"><?php esc_html_e( 'Total images', 'webora-image-optimizer' ); ?></span>
 					</div>
-					<div class="really-stat">
-						<span class="really-stat__value" id="really-bulk-done"><?php echo (int) $really_optimize_bulk_done; ?></span>
-						<span class="really-stat__label"><?php esc_html_e( 'Optimized', 'really-optimize' ); ?></span>
+					<div class="webora-stat">
+						<span class="webora-stat__value" id="webora-bulk-done"><?php echo (int) $webora_bulk_done; ?></span>
+						<span class="webora-stat__label"><?php esc_html_e( 'Optimized', 'webora-image-optimizer' ); ?></span>
 					</div>
-					<div class="really-stat">
-						<span class="really-stat__value" id="really-bulk-remaining"><?php echo (int) max( 0, $really_optimize_bulk_total - $really_optimize_bulk_done ); ?></span>
-						<span class="really-stat__label"><?php esc_html_e( 'Remaining', 'really-optimize' ); ?></span>
+					<div class="webora-stat">
+						<span class="webora-stat__value" id="webora-bulk-remaining"><?php echo (int) max( 0, $webora_bulk_total - $webora_bulk_done ); ?></span>
+						<span class="webora-stat__label"><?php esc_html_e( 'Remaining', 'webora-image-optimizer' ); ?></span>
 					</div>
 				</div>
 
-				<div class="really-progress-wrap">
-					<div class="really-progress">
-						<div class="really-progress__bar" id="really-progress-bar" style="width:<?php echo (int) $really_optimize_bulk_pct; ?>%"></div>
+				<div class="webora-progress-wrap">
+					<div class="webora-progress">
+						<div class="webora-progress__bar" id="webora-progress-bar" style="width:<?php echo (int) $webora_bulk_pct; ?>%"></div>
 					</div>
-					<span class="really-progress__pct" id="really-progress-pct"><?php echo (int) $really_optimize_bulk_pct; ?>%</span>
+					<span class="webora-progress__pct" id="webora-progress-pct"><?php echo (int) $webora_bulk_pct; ?>%</span>
 				</div>
 
-				<div class="really-bulk-options">
+				<div class="webora-bulk-options">
 					<label>
-						<input type="checkbox" id="really-skip-done" checked />
-						<?php esc_html_e( 'Skip already optimized images', 'really-optimize' ); ?>
+						<input type="checkbox" id="webora-skip-done" checked />
+						<?php esc_html_e( 'Skip already optimized images', 'webora-image-optimizer' ); ?>
 					</label>
 				</div>
 
-				<div class="really-bulk-actions">
-					<button type="button" class="button button-primary" id="really-bulk-start">
-						<?php esc_html_e( 'Start Optimization', 'really-optimize' ); ?>
+				<div class="webora-bulk-actions">
+					<button type="button" class="button button-primary" id="webora-bulk-start">
+						<?php esc_html_e( 'Start Optimization', 'webora-image-optimizer' ); ?>
 					</button>
-					<button type="button" class="button" id="really-bulk-pause" style="display:none">
-						<?php esc_html_e( 'Pause', 'really-optimize' ); ?>
+					<button type="button" class="button" id="webora-bulk-pause" style="display:none">
+						<?php esc_html_e( 'Pause', 'webora-image-optimizer' ); ?>
 					</button>
-					<button type="button" class="button" id="really-bulk-reset">
-						<?php esc_html_e( 'Reset Marks', 'really-optimize' ); ?>
+					<button type="button" class="button" id="webora-bulk-reset">
+						<?php esc_html_e( 'Reset Marks', 'webora-image-optimizer' ); ?>
 					</button>
-					<span class="really-bulk-status" id="really-bulk-status"></span>
+					<span class="webora-bulk-status" id="webora-bulk-status"></span>
 				</div>
 			</div>
 
-			<div class="really-card">
-				<h2><?php esc_html_e( 'Log', 'really-optimize' ); ?></h2>
-				<div class="really-log" id="really-bulk-log">
-					<p class="really-log__empty"><?php esc_html_e( 'Log will appear here during processing.', 'really-optimize' ); ?></p>
+			<div class="webora-card">
+				<h2><?php esc_html_e( 'Log', 'webora-image-optimizer' ); ?></h2>
+				<div class="webora-log" id="webora-bulk-log">
+					<p class="webora-log__empty"><?php esc_html_e( 'Log will appear here during processing.', 'webora-image-optimizer' ); ?></p>
 				</div>
 			</div>
 
 		</div>
 		<?php endif; ?>
 
-		<?php if ( 'bulk' !== $really_optimize_active_tab ) : ?>
-			<?php submit_button( __( 'Save Settings', 'really-optimize' ) ); ?>
+		<?php if ( 'bulk' !== $webora_active_tab ) : ?>
+			<?php submit_button( __( 'Save Settings', 'webora-image-optimizer' ) ); ?>
 		<?php endif; ?>
 	</form>
 </div>

@@ -4,8 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET param for tab navigation, not form processing.
-$webora_active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'images';
-$webora_tabs = array(
+$webora_image_optimizer_active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'images';
+$webora_image_optimizer_tabs = array(
 	'images' => __( 'Image Optimization', 'webora-image-optimizer' ),
 	'bulk'   => __( 'Bulk Optimize', 'webora-image-optimizer' ),
 );
@@ -14,21 +14,21 @@ $webora_tabs = array(
 	<h1><?php esc_html_e( 'Webora Image Optimizer', 'webora-image-optimizer' ); ?></h1>
 
 	<nav class="nav-tab-wrapper">
-		<?php foreach ( $webora_tabs as $webora_slug => $webora_label ) : ?>
-			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'webora-image-optimizer', 'tab' => $webora_slug ), admin_url( 'options-general.php' ) ) ); ?>"
-			   class="nav-tab <?php echo $webora_active_tab === $webora_slug ? 'nav-tab-active' : ''; ?>">
-				<?php echo esc_html( $webora_label ); ?>
+		<?php foreach ( $webora_image_optimizer_tabs as $webora_image_optimizer_slug => $webora_image_optimizer_label ) : ?>
+			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'webora-image-optimizer', 'tab' => $webora_image_optimizer_slug ), admin_url( 'options-general.php' ) ) ); ?>"
+			   class="nav-tab <?php echo $webora_image_optimizer_active_tab === $webora_image_optimizer_slug ? 'nav-tab-active' : ''; ?>">
+				<?php echo esc_html( $webora_image_optimizer_label ); ?>
 			</a>
 		<?php endforeach; ?>
 	</nav>
 
 	<form method="post" action="">
 		<?php wp_nonce_field( 'webora_image_optimizer_save', 'webora_image_optimizer_nonce' ); ?>
-		<input type="hidden" name="webora_image_optimizer_tab" value="<?php echo esc_attr( $webora_active_tab ); ?>" />
+		<input type="hidden" name="webora_image_optimizer_tab" value="<?php echo esc_attr( $webora_image_optimizer_active_tab ); ?>" />
 
-		<?php if ( 'images' === $webora_active_tab ) :
-			$webora_cli_status = Webora_Image_Optimizer_CLI::status();
-			$webora_cli_paths  = $settings['cli_paths'];
+		<?php if ( 'images' === $webora_image_optimizer_active_tab ) :
+			$webora_image_optimizer_cli_status = Webora_Image_Optimizer_CLI::status();
+			$webora_image_optimizer_cli_paths  = $settings['cli_paths'];
 		?>
 		<div class="webora-tab-panel">
 
@@ -176,24 +176,24 @@ $webora_tabs = array(
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ( $webora_cli_status as $webora_key => $webora_tool ) : ?>
+						<?php foreach ( $webora_image_optimizer_cli_status as $webora_image_optimizer_key => $webora_image_optimizer_tool ) : ?>
 						<tr>
-							<td><strong><?php echo esc_html( $webora_tool['label'] ); ?></strong></td>
-							<td><?php echo esc_html( $webora_tool['purpose'] ); ?></td>
+							<td><strong><?php echo esc_html( $webora_image_optimizer_tool['label'] ); ?></strong></td>
+							<td><?php echo esc_html( $webora_image_optimizer_tool['purpose'] ); ?></td>
 							<td>
-								<?php if ( $webora_tool['available'] ) : ?>
+								<?php if ( $webora_image_optimizer_tool['available'] ) : ?>
 									<span class="webora-badge webora-badge--ok"><?php esc_html_e( 'Found', 'webora-image-optimizer' ); ?></span>
 								<?php else : ?>
 									<span class="webora-badge webora-badge--missing"><?php esc_html_e( 'Not found', 'webora-image-optimizer' ); ?></span>
 								<?php endif; ?>
 							</td>
 							<td>
-								<code><?php echo $webora_tool['path'] ? esc_html( $webora_tool['path'] ) : '-'; ?></code>
+								<code><?php echo $webora_image_optimizer_tool['path'] ? esc_html( $webora_image_optimizer_tool['path'] ) : '-'; ?></code>
 							</td>
 							<td>
-								<input type="text" name="cli_paths[<?php echo esc_attr( $webora_key ); ?>]"
-									value="<?php echo esc_attr( isset( $webora_cli_paths[ $webora_key ] ) ? $webora_cli_paths[ $webora_key ] : '' ); ?>"
-									placeholder="/usr/bin/<?php echo esc_attr( $webora_tool['label'] ); ?>"
+								<input type="text" name="cli_paths[<?php echo esc_attr( $webora_image_optimizer_key ); ?>]"
+									value="<?php echo esc_attr( isset( $webora_image_optimizer_cli_paths[ $webora_image_optimizer_key ] ) ? $webora_image_optimizer_cli_paths[ $webora_image_optimizer_key ] : '' ); ?>"
+									placeholder="/usr/bin/<?php echo esc_attr( $webora_image_optimizer_tool['label'] ); ?>"
 									class="regular-text" />
 							</td>
 						</tr>
@@ -211,10 +211,10 @@ $webora_tabs = array(
 		</div>
 		<?php endif; ?>
 
-		<?php if ( 'bulk' === $webora_active_tab ) :
-			$webora_bulk_total = Webora_Image_Optimizer_Bulk::count_total();
-			$webora_bulk_done  = Webora_Image_Optimizer_Bulk::count_done();
-			$webora_bulk_pct   = $webora_bulk_total > 0 ? round( $webora_bulk_done / $webora_bulk_total * 100 ) : 0;
+		<?php if ( 'bulk' === $webora_image_optimizer_active_tab ) :
+			$webora_image_optimizer_bulk_total = Webora_Image_Optimizer_Bulk::count_total();
+			$webora_image_optimizer_bulk_done  = Webora_Image_Optimizer_Bulk::count_done();
+			$webora_image_optimizer_bulk_pct   = $webora_image_optimizer_bulk_total > 0 ? round( $webora_image_optimizer_bulk_done / $webora_image_optimizer_bulk_total * 100 ) : 0;
 		?>
 		<div class="webora-tab-panel">
 
@@ -223,24 +223,24 @@ $webora_tabs = array(
 
 				<div class="webora-bulk-stats">
 					<div class="webora-stat">
-						<span class="webora-stat__value" id="webora-bulk-total"><?php echo (int) $webora_bulk_total; ?></span>
+						<span class="webora-stat__value" id="webora-bulk-total"><?php echo (int) $webora_image_optimizer_bulk_total; ?></span>
 						<span class="webora-stat__label"><?php esc_html_e( 'Total images', 'webora-image-optimizer' ); ?></span>
 					</div>
 					<div class="webora-stat">
-						<span class="webora-stat__value" id="webora-bulk-done"><?php echo (int) $webora_bulk_done; ?></span>
+						<span class="webora-stat__value" id="webora-bulk-done"><?php echo (int) $webora_image_optimizer_bulk_done; ?></span>
 						<span class="webora-stat__label"><?php esc_html_e( 'Optimized', 'webora-image-optimizer' ); ?></span>
 					</div>
 					<div class="webora-stat">
-						<span class="webora-stat__value" id="webora-bulk-remaining"><?php echo (int) max( 0, $webora_bulk_total - $webora_bulk_done ); ?></span>
+						<span class="webora-stat__value" id="webora-bulk-remaining"><?php echo (int) max( 0, $webora_image_optimizer_bulk_total - $webora_image_optimizer_bulk_done ); ?></span>
 						<span class="webora-stat__label"><?php esc_html_e( 'Remaining', 'webora-image-optimizer' ); ?></span>
 					</div>
 				</div>
 
 				<div class="webora-progress-wrap">
 					<div class="webora-progress">
-						<div class="webora-progress__bar" id="webora-progress-bar" style="width:<?php echo (int) $webora_bulk_pct; ?>%"></div>
+						<div class="webora-progress__bar" id="webora-progress-bar" style="width:<?php echo (int) $webora_image_optimizer_bulk_pct; ?>%"></div>
 					</div>
-					<span class="webora-progress__pct" id="webora-progress-pct"><?php echo (int) $webora_bulk_pct; ?>%</span>
+					<span class="webora-progress__pct" id="webora-progress-pct"><?php echo (int) $webora_image_optimizer_bulk_pct; ?>%</span>
 				</div>
 
 				<div class="webora-bulk-options">
@@ -274,7 +274,7 @@ $webora_tabs = array(
 		</div>
 		<?php endif; ?>
 
-		<?php if ( 'bulk' !== $webora_active_tab ) : ?>
+		<?php if ( 'bulk' !== $webora_image_optimizer_active_tab ) : ?>
 			<?php submit_button( __( 'Save Settings', 'webora-image-optimizer' ) ); ?>
 		<?php endif; ?>
 	</form>

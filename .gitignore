@@ -2,3 +2,4 @@
 .distignore
 .git
 .gitignore
+.DS_Store

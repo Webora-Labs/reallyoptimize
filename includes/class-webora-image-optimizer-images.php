@@ -38,7 +38,7 @@ class Webora_Image_Optimizer_Images {
 		// 1. Resize if needed (always uses WP image editor — no CLI needed).
 		$this->resize_if_needed( $file, $mime );
 
-		// 2. Convert to AVIF (CLI preferred, GD as fallback) — takes priority over WebP.
+		// 2. Convert to AVIF — takes priority over WebP.
 		if ( Webora_Image_Optimizer_Settings::get( 'img_avif' ) && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
 			$avif = $this->convert_to_avif( $file, $mime, $quality );
 			if ( $avif ) {
@@ -50,9 +50,9 @@ class Webora_Image_Optimizer_Images {
 			}
 		}
 
-		// 3. Convert to WebP (CLI preferred, GD as fallback).
+		// 3. Convert to WebP via GD.
 		if ( Webora_Image_Optimizer_Settings::get( 'img_webp' ) && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
-			$webp = $this->convert_to_webp( $file, $mime, $quality );
+			$webp = $this->gd_to_webp( $file, $mime, $quality );
 			if ( $webp ) {
 				wp_delete_file( $file );
 				$upload['file'] = $webp;
@@ -62,7 +62,7 @@ class Webora_Image_Optimizer_Images {
 			}
 		}
 
-		// 4. Compress in-place (CLI preferred, GD/Imagick as fallback).
+		// 4. Compress in-place via GD/Imagick.
 		if ( Webora_Image_Optimizer_Settings::get( 'img_compress' ) ) {
 			$this->compress( $file, $mime, $quality );
 		}
@@ -93,46 +93,24 @@ class Webora_Image_Optimizer_Images {
 	}
 
 	// -----------------------------------------------------------------------
-	// Compression  (CLI → GD/Imagick)
+	// Compression (GD/Imagick via WordPress image editor)
 	// -----------------------------------------------------------------------
 
 	private function compress( $file, $mime, $quality ) {
-		$done = false;
-
-		if ( 'image/jpeg' === $mime ) {
-			$done = Webora_Image_Optimizer_CLI::compress_jpeg( $file, $quality );
-		} elseif ( 'image/png' === $mime ) {
-			$done = Webora_Image_Optimizer_CLI::compress_png( $file );
-		}
-
-		// Fallback: WordPress image editor (GD or Imagick).
-		if ( ! $done ) {
-			$editor = wp_get_image_editor( $file );
-			if ( ! is_wp_error( $editor ) ) {
-				$editor->set_quality( $quality );
-				$editor->save( $file );
-			}
+		$editor = wp_get_image_editor( $file );
+		if ( ! is_wp_error( $editor ) ) {
+			$editor->set_quality( $quality );
+			$editor->save( $file );
 		}
 	}
 
 	// -----------------------------------------------------------------------
-	// WebP conversion  (CLI → GD)
+	// WebP conversion (GD)
 	// -----------------------------------------------------------------------
 
 	/**
 	 * @return string|false  Path to new .webp file, or false on failure.
 	 */
-	private function convert_to_webp( $file, $mime, $quality ) {
-		// Try cwebp first.
-		$webp = Webora_Image_Optimizer_CLI::to_webp( $file, $quality );
-		if ( $webp ) {
-			return $webp;
-		}
-
-		// Fallback: PHP GD.
-		return $this->gd_to_webp( $file, $mime, $quality );
-	}
-
 	private function gd_to_webp( $file, $mime, $quality ) {
 		if ( ! function_exists( 'imagewebp' ) ) {
 			return false;

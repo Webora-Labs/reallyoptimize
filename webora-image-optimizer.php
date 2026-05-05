@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Webora Image Optimizer
- * Plugin URI:  https://github.com/Webora-Labs/webora-image-optimizer
+ * Plugin URI:  https://github.com/Webora-Labs/reallyoptimize
  * Description: Image optimization plugin for WordPress — compress, convert to AVIF/WebP, lazy load, and bulk optimize.
  * Version:     1.0.0
  * Author:      Webora Labs

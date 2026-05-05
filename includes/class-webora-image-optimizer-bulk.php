@@ -127,16 +127,9 @@ class Webora_Image_Optimizer_Bulk {
 
 		// --- WebP conversion ------------------------------------------------
 		if ( $do_webp && in_array( $mime, array( 'image/jpeg', 'image/png' ), true ) ) {
-			$webp = Webora_Image_Optimizer_CLI::to_webp( $file, $quality );
-
-			if ( ! $webp ) {
-				// GD fallback
-				$webp = self::gd_to_webp( $file, $mime, $quality );
-			}
+			$webp = self::gd_to_webp( $file, $mime, $quality );
 
 			if ( $webp ) {
-				// Swap file reference in WP, keep original for other sizes.
-				$webp_relative = str_replace( trailingslashit( wp_upload_dir()['basedir'] ), '', $webp );
 				update_attached_file( $attachment_id, $webp );
 				wp_update_post( array(
 					'ID'             => $attachment_id,
@@ -153,22 +146,13 @@ class Webora_Image_Optimizer_Bulk {
 			}
 		}
 
-		// --- Compression only -----------------------------------------------
-		$done = false;
-		if ( 'image/jpeg' === $mime ) {
-			$done = Webora_Image_Optimizer_CLI::compress_jpeg( $file, $quality );
-		} elseif ( 'image/png' === $mime ) {
-			$done = Webora_Image_Optimizer_CLI::compress_png( $file );
-		}
-
-		// GD/Imagick fallback
-		if ( ! $done ) {
-			$editor = wp_get_image_editor( $file );
-			if ( ! is_wp_error( $editor ) ) {
-				$editor->set_quality( $quality );
-				$editor->save( $file );
-				$done = true;
-			}
+		// --- Compression via GD/Imagick -------------------------------------
+		$done   = false;
+		$editor = wp_get_image_editor( $file );
+		if ( ! is_wp_error( $editor ) ) {
+			$editor->set_quality( $quality );
+			$editor->save( $file );
+			$done = true;
 		}
 
 		$size_after = filesize( $file );
@@ -180,10 +164,10 @@ class Webora_Image_Optimizer_Bulk {
 		return array(
 			'id'      => $attachment_id,
 			'file'    => basename( $file ),
-			'status'  => $done ? 'ok' : 'fallback',
+			'status'  => $done ? 'ok' : 'error',
 			'message' => $done
 				? sprintf( 'Saved %s (%s%%)', size_format( max( 0, $saved ) ), $saved_pct )
-				: 'Processed via GD/Imagick',
+				: 'Image editor unavailable',
 		);
 	}
 

@@ -26,10 +26,7 @@ $webora_image_optimizer_tabs = array(
 		<?php wp_nonce_field( 'webora_image_optimizer_save', 'webora_image_optimizer_nonce' ); ?>
 		<input type="hidden" name="webora_image_optimizer_tab" value="<?php echo esc_attr( $webora_image_optimizer_active_tab ); ?>" />
 
-		<?php if ( 'images' === $webora_image_optimizer_active_tab ) :
-			$webora_image_optimizer_cli_status = Webora_Image_Optimizer_CLI::status();
-			$webora_image_optimizer_cli_paths  = $settings['cli_paths'];
-		?>
+		<?php if ( 'images' === $webora_image_optimizer_active_tab ) : ?>
 		<div class="webora-tab-panel">
 
 			<div class="webora-card">
@@ -154,58 +151,6 @@ $webora_image_optimizer_tabs = array(
 						</td>
 					</tr>
 				</table>
-			</div>
-
-			<div class="webora-card">
-				<h2><?php esc_html_e( 'CLI Tools', 'webora-image-optimizer' ); ?></h2>
-
-				<?php if ( ! Webora_Image_Optimizer_CLI::exec_available() ) : ?>
-					<p class="webora-warning">
-						<?php esc_html_e( 'PHP exec() is disabled on this server. CLI tools cannot be used. Falling back to GD/Imagick.', 'webora-image-optimizer' ); ?>
-					</p>
-				<?php else : ?>
-
-				<table class="widefat webora-tools-table">
-					<thead>
-						<tr>
-							<th><?php esc_html_e( 'Tool', 'webora-image-optimizer' ); ?></th>
-							<th><?php esc_html_e( 'Format', 'webora-image-optimizer' ); ?></th>
-							<th><?php esc_html_e( 'Status', 'webora-image-optimizer' ); ?></th>
-							<th><?php esc_html_e( 'Path detected', 'webora-image-optimizer' ); ?></th>
-							<th><?php esc_html_e( 'Custom path (optional)', 'webora-image-optimizer' ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ( $webora_image_optimizer_cli_status as $webora_image_optimizer_key => $webora_image_optimizer_tool ) : ?>
-						<tr>
-							<td><strong><?php echo esc_html( $webora_image_optimizer_tool['label'] ); ?></strong></td>
-							<td><?php echo esc_html( $webora_image_optimizer_tool['purpose'] ); ?></td>
-							<td>
-								<?php if ( $webora_image_optimizer_tool['available'] ) : ?>
-									<span class="webora-badge webora-badge--ok"><?php esc_html_e( 'Found', 'webora-image-optimizer' ); ?></span>
-								<?php else : ?>
-									<span class="webora-badge webora-badge--missing"><?php esc_html_e( 'Not found', 'webora-image-optimizer' ); ?></span>
-								<?php endif; ?>
-							</td>
-							<td>
-								<code><?php echo $webora_image_optimizer_tool['path'] ? esc_html( $webora_image_optimizer_tool['path'] ) : '-'; ?></code>
-							</td>
-							<td>
-								<input type="text" name="cli_paths[<?php echo esc_attr( $webora_image_optimizer_key ); ?>]"
-									value="<?php echo esc_attr( isset( $webora_image_optimizer_cli_paths[ $webora_image_optimizer_key ] ) ? $webora_image_optimizer_cli_paths[ $webora_image_optimizer_key ] : '' ); ?>"
-									placeholder="/usr/bin/<?php echo esc_attr( $webora_image_optimizer_tool['label'] ); ?>"
-									class="regular-text" />
-							</td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-
-				<p class="description" style="margin-top:8px;">
-					<?php esc_html_e( 'Leave custom path empty to use auto-detection.', 'webora-image-optimizer' ); ?>
-				</p>
-
-				<?php endif; ?>
 			</div>
 
 		</div>

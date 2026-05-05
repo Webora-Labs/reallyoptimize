@@ -21,7 +21,6 @@ class Webora_Image_Optimizer {
 
 	private function includes() {
 		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-settings.php';
-		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-cli.php';
 		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-images.php';
 		require_once WEBORA_IMAGE_OPTIMIZER_DIR . 'includes/class-webora-image-optimizer-bulk.php';
 

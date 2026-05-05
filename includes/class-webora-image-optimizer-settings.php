@@ -16,8 +16,6 @@ class Webora_Image_Optimizer_Settings {
 			'img_add_dimensions'   => false,
 			'img_max_width'        => 2560,
 			'img_max_height'       => 2560,
-			// CLI custom binary paths (empty = auto-detect)
-			'cli_paths'            => array(),
 		);
 	}
 
@@ -45,7 +43,6 @@ class Webora_Image_Optimizer_Settings {
 					'img_max_width'  => array( 100, 9999 ),
 					'img_max_height' => array( 100, 9999 ),
 				),
-				'special' => array( 'cli_paths' ),
 			),
 		);
 	}
@@ -85,23 +82,6 @@ class Webora_Image_Optimizer_Settings {
 			foreach ( $fields['select'] ?? array() as $key => $allowed ) {
 				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $allowed, true ) ) {
 					$current[ $key ] = $data[ $key ];
-				}
-			}
-
-			// Special fields.
-			foreach ( $fields['special'] ?? array() as $key ) {
-				if ( 'cli_paths' === $key ) {
-					$cli_paths = array();
-					if ( ! empty( $data['cli_paths'] ) && is_array( $data['cli_paths'] ) ) {
-						foreach ( $data['cli_paths'] as $bin => $path ) {
-							$bin  = sanitize_key( $bin );
-							$path = sanitize_text_field( $path );
-							if ( $bin && $path ) {
-								$cli_paths[ $bin ] = $path;
-							}
-						}
-					}
-					$current['cli_paths'] = $cli_paths;
 				}
 			}
 		}

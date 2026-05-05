@@ -1,5 +1,5 @@
 === Webora Image Optimizer ===
-Contributors: weboralabs
+Contributors: weboralabs, yevhenbulba
 Tags: image optimization, webp, avif, compress, lazy load
 Requires at least: 6.0
 Tested up to: 6.9
